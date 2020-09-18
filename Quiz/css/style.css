@@ -1,0 +1,21 @@
+/*
+Color palette:
+#262626
+#ACBFA4
+#E2E8CE
+#FF7F11
+#FF1B1C
+#D5D8DC
+*/
+
+/* top right bottom left  */
+
+body {
+  margin: 50px;
+  background-color: #ACBFA4
+}
+
+h1{
+  color: #FF7F11;
+  background-color: #262626
+}
