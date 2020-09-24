@@ -5,22 +5,26 @@ Color palette:
 #E2E8CE
 #FF7F11
 #FF1B1C
-#D5D8DC
-*/
 
-/* border: 25px 50px 75px 100px;
-padding:25px 50px 75px 100px;
-margin: 25px 50px 75px 100px; */
+*/
 
 /* top right bottom left  */
 
 body {
-  border: 25px 50px 75px 100px #ACBFA4;
-  padding: 50px;
-  margin: 25px;
+  background-color: #D5D8DC;
+
+  border: 10px;
+  padding:25px 50px 75px 100px;
+  margin: 25px 50px 75px 100px;
+
+  border-style: solid;
+  border-color: #ACBFA4;
 
 }
 
 h1{
-
+  background-color: #262626;
+  color: #D5D8DC;
+  text-align: center;
+  font-size: 60px;
 }
