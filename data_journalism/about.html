@@ -1,0 +1,100 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <!-- Materialize -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  <title>Death Statistics Around the World></title>
+  <link rel="icon" type="image/png" href="../build/images/logo.png"/>
+
+  <meta name="description" content="Life Expectancy and Main Causes of Death Around the World">
+  <meta name="author" content="Ursula and Malachy">
+  <link rel="stylesheet" href="../build/css/styles.css">
+</head>
+
+<!doctype html>
+
+<body>
+  <header>
+    <h1>Death Statistics Around the World</h1>
+  </header>
+
+  <nav class="navbar">
+    <div class="nav-wrapper">
+      <ul id="nav-mobile" class="left hide-on-med-and-down">
+        <li><a id="home" href="../build/macroview.html">Home</a></li>
+        <li><a id="about" href="../build/about.html">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <script>
+    document.title = "About"
+    var element = document.getElementById("about");
+    element.classList.add("active");
+  </script>
+
+
+  <div class="default">
+    <h2 style="text-align: center">About our project</h2>
+    <h5 style="text-align: left">We each came up with our own design for the macro and microviews, and then took the best elements of each model and combined them into a unified approach that is understandable, simple, and aesthetically pleasing. We chose to use materialize as our CSS platform.</h5>
+    <br />
+    <li>Life expectancy refers to average age at which a person dies in the given region.</li>
+    <li>Infant mortality refers to the rate at which infants do not survive past their first birthday.</li>
+    <li>Data is presented as an average rate per 1000 people in a given region.</li>
+    <br /><br />
+
+    <img src="images/microviewUrsula.jpg" style="width:75%; display: block; margin:auto;">
+    <figcaption>This was Ursula's possible version for the site's microview. We kept the idea of having charts that show the data over time, but we will add a slider that can change the dates. Also, we can make it cleaner by only having 1 chart where you can choose whether you are viewing life expectancy or main causes of death. We kept the idea of having checkboxes where you can see specific causes of death, and we figured that you should be able to check multiple at a time so you can compare data. From an understandability perspective, the page is good. It is clear what the graphs show. From a simplicity perspective, it might be better to integrate the two graphs into a single one and give more viewing options.</figcaption>
+    <br />
+
+    <img src="images/macroviewUrsula.jpg" style="width:75%; display: block; margin:auto;">
+    <figcaption>This was Ursula's possible version for the site's macroview. We liked the color-coding scheme and the idea that if you "zoomed in" on a country it would lead to a microview. The endless dropdown menus seemed like a hassle, so we decided to go with a slider instead to make the site cleaner.
+      From the understandability design perspective, the page looks good. The captions are straight to the point and map makes sense. From the ease design perspective, the dropdown menu makes the design a little cluttered and hard to use.</figcaption>
+    <br />
+
+    <img src="images/microviewMalachy.jpg" style="width:75%; display: block; margin:auto;">
+    <figcaption>This was Malachy's possible version for the site's microview. We will keep the idea of using a slider to view different time intervals and including only 1 graph. We kept the idea of having checkboxes where you can see specific causes of death, and we figured that you should be able to check multiple at a time so you can compare data. From a simplicity perspective, the page is good. The graph is simple and easy to interpret. From a discoverability perspective, it would be better to include more captions to explain how to use the slider.</figcaption>
+    <br />
+
+    <img src="images/macroviewMalachy.jpg" style="width:75%; display: block; margin:auto;">
+    <figcaption>This was Malachy's possible version for the site's macroview. We liked the idea that if you click on a country it would lead to a microview. We also liked the generalized global data and will include that.
+      From a discoverability perspective this page is good. Features have simple captions and data is presented clearly. From a structure perspective it may make sense to organize the data differently. </figcaption>
+    <br />
+
+    <img src="images/pipeline.jpg" style="width:75%; display: block; margin:auto;">
+    <figcaption>This is our build pipeline. We first start with the data sets, where we get all the actual statistics from. Then we clean the data and process it. We turn the cleaned data into maps and charts using d3. (Thank you to d3 for providing <a href="https://www.d3-graph-gallery.com/graph/choropleth_basic.html">sample code for the maps</a> and <a href="https://www.d3-graph-gallery.com/graph/line_basic.html">sample code for the charts</a>). We generated the micropages by using a page generator and ejs templates. Finally, we formatted the site using LESS. On the build side, we made it easier to run the site by automating the build pipeline.</figcaption>
+    <br /><br />
+
+    <h5>
+      Overall, we took the best design principles from both microviews and macroviews. At the end of the day, we decided to focus only on life expectancy because adding different causes of death made the site seem too chaotic. We kept our build pipeline intact and utilized d3 to help us with visualization.
+    </h5>
+    <br />
+
+    <h5>We are doing everything 50/50 with Malachy working on the build pipeline and project organization, and Ursula working on data cleansing and creating the microviews/macroview.</h5>
+    <br />
+
+  </div>
+
+<!doctype html>
+
+<footer class="page-footer">
+  <h6><a href="https://data.worldbank.org/indicator/SP.DYN.LE00.IN" target="_blank">Our Data Source</a></h6>
+  <div class="footer-copyright">
+    <p style="text-align: center; color:gray;">
+      © 2021 Ursula C. Parker and Malachy Guzman <br />
+    </p>
+  </div>
+</footer>
+
+<script src="js/scripts.js"></script>
+
+</body>
+
+</html>
+

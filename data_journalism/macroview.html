@@ -1,0 +1,250 @@
+<!doctype html>
+
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <!-- Materialize -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  <title>Death Statistics Around the World></title>
+  <link rel="icon" type="image/png" href="../build/images/logo.png"/>
+
+  <meta name="description" content="Life Expectancy and Main Causes of Death Around the World">
+  <meta name="author" content="Ursula and Malachy">
+  <link rel="stylesheet" href="../build/css/styles.css">
+</head>
+
+<!doctype html>
+
+<body>
+  <header>
+    <h1>Death Statistics Around the World</h1>
+  </header>
+
+  <nav class="navbar">
+    <div class="nav-wrapper">
+      <ul id="nav-mobile" class="left hide-on-med-and-down">
+        <li><a id="home" href="../build/macroview.html">Home</a></li>
+        <li><a id="about" href="../build/about.html">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+
+<script src="https://unpkg.com/d3-simple-slider"></script>
+
+<!-- Life Expectancy -->
+<h3>Our Project</h3>
+<p>Our project examines life expectancy around the world from 1960-2018. You can click on a country on the chloropleth map and it will show you a chart of the life expectancy from those years. One can learn a lot about the health and politics of countries, regions, and continents through studying life expectancy. One can also extrapolate a country's natural disasters/wars or economic success/better healthcare programs based on if life expectancy dips or rises during a specific time frame.</p>
+<br />
+<h2>Chloropleth Map of Life Expectancy around the World</h2>
+
+<div class="row">
+      <div class="col s7">
+        <svg id="lifeExpectancy" width="800" height="600"></svg>
+        <img src="../build/images/slider.jpg" width="800" height="50"/>
+        <figcaption>Life expectancy (years)<figcaption>
+      </div>
+
+      <div class="col s5">
+        <div class="container" id="dataPickerContainer">
+        <h3>Pick Your Data</h3>
+          <p>
+            <label>
+              <input name="rbutton-le" type="radio" value="LET" checked />
+              <span>Life Expectancy Total</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input name="rbutton-le" type="radio" value="LEF"/>
+              <span>Life Expectancy Female</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input name="rbutton-le" type="radio" value="LEM"/>
+              <span>Life Expectancy Male</span>
+            </label>
+          </p>
+        </div>
+      </div>
+  </div>
+
+<div class="row align-items-center">
+  <div class="col-sm-2"><p id="value-time-le" style="margin-block-start: 0px; margin-block-end: 0px;"></p></div>
+  <div class="col-sm"><div id="slider-time-le"></div></div>
+</div>
+
+
+<script>
+
+//LIFE EXPECTANCY STUFF
+drawMap("LET", "1960")
+
+//selector
+const radioButtonsLE = document.getElementsByName("rbutton-le");
+
+var selectedButtonLE = "LET"
+var selectedYearLE = "1960"
+
+for (let radioButton of radioButtonsLE) {
+
+  radioButton.addEventListener('click', function(){
+    drawMap(radioButton.value, selectedYearLE)
+  })
+}
+
+// The svg
+var svgLE = d3.select("#lifeExpectancy"),
+  width = +svgLE.attr("width"),
+  height = +svgLE.attr("height");
+
+// Map and projection
+var pathLE = d3.geoPath();
+var projectionLE = d3.geoMercator()
+  .scale(140)
+  .center([0,20])
+  .translate([width / 2, height / 2]);
+
+// Data and color scale
+var dataLE = d3.map();
+var colorScaleLE = d3.scaleThreshold()
+  .domain([35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90])
+  .range(d3.schemeSpectral[11]);
+
+// Load external data and boot
+
+function drawMap(slideVal, year) {
+  var linkLE
+  selectedButtonLE = slideVal
+
+  if (slideVal == "LET") {
+    linkLE = "https://raw.githubusercontent.com/ursula-c-parker/DataJournalism/master/data/totalLifeExpectancy.csv"
+
+  }else if (slideVal == "LEF") {
+    linkLE = "https://raw.githubusercontent.com/ursula-c-parker/DataJournalism/master/data/lifeExpectancyFemale.csv"
+
+  }else if (slideVal == "LEM") {
+    linkLE = "https://raw.githubusercontent.com/ursula-c-parker/DataJournalism/master/data/lifeExpectancyMale.csv"
+  }
+
+  d3.queue()
+    .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
+    .defer(d3.csv, linkLE, function(d) {
+      dataLE.set(d["Country Code"], +d[year]);
+    })
+    .await(ready);
+
+}
+
+function ready(error, topo) {
+
+  let mouseOver = function(d) {
+    d3.select(this)
+    .transition()
+    .duration(200)
+    .style("opacity", 3)
+    .style("stroke", "black")
+  }
+
+  let mouseLeave = function(d) {
+    d3.select(this)
+    .transition()
+    .duration(200)
+    .style("opacity", .8)
+    .style("stroke", "transparent")
+  }
+
+  let mouseClick = function(d) {
+    let country = d.properties.name;
+    let url = "../build/" + country.split(" ").join("_") + ".html"
+    window.location.href = url;
+  }
+
+  // Draw the map
+  svgLE.append("g")
+    .selectAll("path")
+    .data(topo.features)
+    .enter()
+    .append("path")
+      // draw each country
+      .attr("d", d3.geoPath()
+        .projection(projectionLE)
+      )
+      // set the color of each country
+      .attr("fill", function (d) {
+        d.total = dataLE.get(d.id) || 55;
+        //console.log(d.id);
+        return colorScaleLE(d.total);
+      })
+      .style("stroke", "transparent")
+      .attr("class", function(d){ return "Country" } )
+      .style("opacity", .8)
+      .on("click", mouseClick)
+      .on("mouseover", mouseOver)
+      .on("mouseleave", mouseLeave)
+  }
+
+  // Slider
+  var dataTimeLE = d3.range(0, 58).map(function(d) {
+    return new Date(1960 + d, 10, 3);
+  });
+
+  var sliderTimeLE = d3
+    .sliderBottom()
+    .min(d3.min(dataTimeLE))
+    .max(d3.max(dataTimeLE))
+    .step(1000 * 60 * 60 * 24 * 365)
+    .width(1350)
+    .tickFormat(d3.timeFormat('%Y'))
+    .tickValues(dataTimeLE)
+    .default(new Date(1960, 10, 3))
+    .on('onchange', val => {
+      d3.select('p#value-time-le').text(d3.timeFormat('%Y')(val));
+
+      selectedYearLE = (d3.timeFormat('%Y')(val))
+      drawMap(selectedButtonLE, selectedYearLE)
+    });
+
+  var gTimeLE = d3
+    .select('div#slider-time-le')
+    .append('svg')
+    .attr('width', 1400)
+    .attr('height', 100)
+    .append('g')
+    .attr('transform', 'translate(30,30)');
+
+  gTimeLE.call(sliderTimeLE);
+
+  d3.select('p#value-time-le').text(d3.timeFormat('%Y')(sliderTimeLE.value()));
+
+</script>
+
+<!doctype html>
+
+<footer class="page-footer">
+  <h6><a href="https://data.worldbank.org/indicator/SP.DYN.LE00.IN" target="_blank">Our Data Source</a></h6>
+  <div class="footer-copyright">
+    <p style="text-align: center; color:gray;">
+      © 2021 Ursula C. Parker and Malachy Guzman <br />
+    </p>
+  </div>
+</footer>
+
+<script src="js/scripts.js"></script>
+
+</body>
+
+</html>
+
